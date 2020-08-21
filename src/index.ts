@@ -7,13 +7,17 @@ const main = async () => {
     // Connect to DB
     const orm = await MikroORM.init(microConfig);
 
-    // Run migrations
-    orm.getMigrator().up();
+    // Run migrations. To create:
+    // $ npx mikro-orm migration:create
+    await orm.getMigrator().up();
 
     // Run SQL
-    const post = orm.em.create(Post, {title: 'my first post'})
+    const post = orm.em.create(Post, {title: 'Hello, learning Postgres, ORM and TS'})
     await orm.em.persistAndFlush(post);
+
+    const posts = await orm.em.find(Post, {});
+    console.log(posts);
 }
 
 
-main().catch(err => { console.log(err) });
+main();
